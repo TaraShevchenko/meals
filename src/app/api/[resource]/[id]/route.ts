@@ -20,7 +20,6 @@ export async function PUT(request: NextRequest, { params }: { params: Promise<{ 
     try {
         const data = await request.json()
 
-        // Получаем предыдущие данные для обновления
         const prevResult = await dataProvider.getOne(resource, { id })
         const previousData = prevResult.data
 

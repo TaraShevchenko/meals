@@ -7,15 +7,11 @@ import { MealComponentCreate, MealComponentEdit, MealComponentList } from 'modul
 import { MealCreate, MealEdit, MealList } from 'module/Meals'
 import { MenuCreate, MenuEdit, MenuList } from 'module/Menus'
 
-import { adminApiProvider } from './apiProvider'
+import { reactAdminDataProvider } from 'shared/lib/react-admin/provider'
 
 const AdminPanel = () => {
-    if (typeof window === 'undefined') {
-        return null
-    }
-
     return (
-        <Admin dataProvider={adminApiProvider}>
+        <Admin dataProvider={reactAdminDataProvider}>
             <Resource
                 name="ingredients"
                 list={IngredientList}

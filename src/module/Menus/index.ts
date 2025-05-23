@@ -1,2 +1,2 @@
 export { MenuList, MenuEdit, MenuCreate } from './ui'
-export { menusDataProvider } from './model'
+export { menusDataProvider, type CreateMenuData } from './model'

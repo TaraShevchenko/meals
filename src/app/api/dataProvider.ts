@@ -1,17 +1,13 @@
 import { DataProvider, RaRecord } from 'react-admin'
 
-import { ingredientsDataProvider } from 'module/Ingredients/model'
-import { mealComponentsDataProvider } from 'module/MealComponents/model'
-import { mealsDataProvider } from 'module/Meals/model'
-import { menusDataProvider } from 'module/Menus/model'
-
-import type {
-    CreateIngredientData,
-    CreateMealComponentFormData,
-    CreateMealData,
-    CreateMenuData,
-    UpdateMealComponentFormData,
-} from 'shared/types/prisma.types'
+import { type CreateIngredientData, ingredientsDataProvider } from 'module/Ingredients'
+import {
+    type CreateMealComponentFormData,
+    type UpdateMealComponentFormData,
+    mealComponentsDataProvider,
+} from 'module/MealComponents'
+import { type CreateMealData, mealsDataProvider } from 'module/Meals'
+import { type CreateMenuData, menusDataProvider } from 'module/Menus'
 
 export const dataProvider: DataProvider = {
     getList: async <RecordType extends RaRecord = RaRecord>(

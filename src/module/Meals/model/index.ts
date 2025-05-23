@@ -1,4 +1,4 @@
-import type { Prisma } from '@prisma/client'
+import type { MealComponent, Prisma, Meal as PrismaMeal } from '@prisma/client'
 
 import { prisma } from 'shared/lib/prisma'
 import type {
@@ -13,8 +13,13 @@ import type {
     GetOneParams,
     UpdateManyParams,
     UpdateParams,
-} from 'shared/types/dataProvider.types'
-import type { CreateMealData, Meal, UpdateMealData } from 'shared/types/prisma.types'
+} from 'shared/lib/react-admin/types'
+
+type Meal = PrismaMeal & {
+    components?: MealComponent[]
+}
+export type CreateMealData = Prisma.MealCreateInput
+export type UpdateMealData = Prisma.MealUpdateInput
 
 export const mealsDataProvider = {
     getList: async (params: GetListParams): Promise<GetListResult<Meal>> => {
