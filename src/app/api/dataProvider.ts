@@ -48,11 +48,10 @@ export const dataProvider: DataProvider = {
                 break
 
             case 'ingredients':
-                // Проверяем, есть ли параметр q для поиска по названию ингредиента
                 const whereClause: Record<string, unknown> = { ...filter }
                 if (filter.q) {
                     whereClause.name = { contains: filter.q, mode: 'insensitive' }
-                    delete whereClause.q // Удаляем q из параметров фильтрации, так как Prisma его не поддерживает
+                    delete whereClause.q
                 }
 
                 data = await prisma.ingredient.findMany({
@@ -197,8 +196,16 @@ export const dataProvider: DataProvider = {
                     data: {
                         name: data.name,
                         type: data.type,
-                        // Обработка ingredients будет делаться отдельно после создания компонента
+                        ingredients: data.ingredients
+                            ? {
+                                  create: data.ingredients.map((ingredient: any) => ({
+                                      quantity: ingredient.quantity,
+                                      ingredientId: ingredient.ingredientId,
+                                  })),
+                              }
+                            : undefined,
                     },
+                    include: { ingredients: { include: { ingredient: true } } },
                 })
                 break
 
@@ -264,11 +271,24 @@ export const dataProvider: DataProvider = {
                 break
 
             case 'mealComponents':
+                // Сначала удаляем все существующие ингредиенты
+                await prisma.mealComponentIngredient.deleteMany({
+                    where: { componentId: String(id) },
+                })
+
                 result = await prisma.mealComponent.update({
                     where: { id: String(id) },
                     data: {
                         name: data.name,
                         type: data.type,
+                        ingredients: data.ingredients
+                            ? {
+                                  create: data.ingredients.map((ingredient: any) => ({
+                                      quantity: ingredient.quantity,
+                                      ingredientId: ingredient.ingredientId,
+                                  })),
+                              }
+                            : undefined,
                     },
                     include: { ingredients: { include: { ingredient: true } } },
                 })

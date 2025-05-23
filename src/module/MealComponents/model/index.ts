@@ -12,14 +12,14 @@ import type {
     GetOneParams,
     UpdateManyParams,
     UpdateParams,
-} from 'shared/types/dataProvider'
+} from 'shared/types/dataProvider.types'
 import type {
     CreateMealComponentFormData,
     MealComponent,
     MealComponentWithIngredients,
     UpdateMealComponentData,
     UpdateMealComponentFormData,
-} from 'shared/types/prisma'
+} from 'shared/types/prisma.types'
 
 export const mealComponentsDataProvider = {
     getList: async (params: GetListParams): Promise<GetListResult<MealComponentWithIngredients>> => {
@@ -94,7 +94,6 @@ export const mealComponentsDataProvider = {
     ): Promise<DataProviderResult<MealComponentWithIngredients>> => {
         const { id, data } = params
 
-        // Сначала удаляем все существующие ингредиенты
         await prisma.mealComponentIngredient.deleteMany({
             where: { componentId: String(id) },
         })

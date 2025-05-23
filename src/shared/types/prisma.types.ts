@@ -72,7 +72,6 @@ export type MenuWithMeals = Prisma.MenuGetPayload<{
     }
 }>
 
-// Типы для данных с ингредиентами из формы
 export type MealComponentIngredientFormData = {
     ingredientId: string
     quantity: number

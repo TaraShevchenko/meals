@@ -10,8 +10,8 @@ import type {
     GetOneParams,
     UpdateManyParams,
     UpdateParams,
-} from 'shared/types/dataProvider'
-import type { CreateIngredientData, Ingredient, UpdateIngredientData } from 'shared/types/prisma'
+} from 'shared/types/dataProvider.types'
+import type { CreateIngredientData, Ingredient, UpdateIngredientData } from 'shared/types/prisma.types'
 
 export const ingredientsDataProvider = {
     getList: async (params: GetListParams): Promise<GetListResult<Ingredient>> => {

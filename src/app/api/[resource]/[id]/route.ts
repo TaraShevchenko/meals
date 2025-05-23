@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 
-import { dataProvider } from '../../data-provider'
+import { dataProvider } from '../../dataProvider'
 
 export async function GET(request: NextRequest, { params }: { params: Promise<{ resource: string; id: string }> }) {
     const { resource, id } = await params

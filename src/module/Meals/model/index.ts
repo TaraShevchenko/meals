@@ -12,8 +12,8 @@ import type {
     GetOneParams,
     UpdateManyParams,
     UpdateParams,
-} from 'shared/types/dataProvider'
-import type { CreateMealData, Meal, UpdateMealData } from 'shared/types/prisma'
+} from 'shared/types/dataProvider.types'
+import type { CreateMealData, Meal, UpdateMealData } from 'shared/types/prisma.types'
 
 export const mealsDataProvider = {
     getList: async (params: GetListParams): Promise<GetListResult<Meal>> => {

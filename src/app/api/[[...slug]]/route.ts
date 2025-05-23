@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 
-import { dataProvider } from '../data-provider'
+import { dataProvider } from '../dataProvider'
 
 export async function GET(request: NextRequest) {
     const url = new URL(request.url)
