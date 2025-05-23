@@ -9,6 +9,7 @@ import type {
     GetListParams,
     GetListResult,
     GetManyParams,
+    GetManyReferenceParams,
     GetOneParams,
     UpdateManyParams,
     UpdateParams,
@@ -128,5 +129,46 @@ export const mealsDataProvider = {
         })
 
         return { data: ids }
+    },
+
+    getManyReference: async (params: GetManyReferenceParams): Promise<GetListResult<Meal>> => {
+        const {
+            target,
+            id,
+            pagination = { page: 1, perPage: 10 },
+            sort = { field: 'createdAt', order: 'DESC' },
+            filter = {},
+        } = params
+        const { page = 1, perPage = 10 } = pagination
+        const { field = 'createdAt', order = 'DESC' } = sort
+        const offset = (page - 1) * perPage
+
+        if (target === 'menus') {
+            const data = await prisma.meal.findMany({
+                skip: offset,
+                take: perPage,
+                where: {
+                    menus: {
+                        some: { id: String(id) },
+                    },
+                    ...filter,
+                },
+                orderBy: { [field]: order.toLowerCase() as 'asc' | 'desc' },
+                include: { components: true },
+            })
+
+            const total = await prisma.meal.count({
+                where: {
+                    menus: {
+                        some: { id: String(id) },
+                    },
+                    ...filter,
+                },
+            })
+
+            return { data, total }
+        }
+
+        throw new Error(`Unknown target: ${target} for meals`)
     },
 }

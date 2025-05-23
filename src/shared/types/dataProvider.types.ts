@@ -27,6 +27,14 @@ export interface GetManyParams {
     ids: string[]
 }
 
+export interface GetManyReferenceParams {
+    target: string
+    id: string
+    pagination?: Pagination
+    sort?: Sort
+    filter?: Filter
+}
+
 export interface CreateParams<T = Record<string, unknown>> {
     data: T
 }

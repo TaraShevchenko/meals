@@ -2,15 +2,14 @@
 
 import { Admin, Resource } from 'react-admin'
 
-import { adminApiProvider } from './adminApiProvider'
-import { IngredientCreate, IngredientEdit, IngredientList } from './resources/ingredients'
-import { MealComponentCreate, MealComponentEdit, MealComponentList } from './resources/mealComponents'
-import { MealCreate, MealEdit, MealList } from './resources/meals'
-import { MenuCreate, MenuEdit, MenuList } from './resources/menus'
+import { IngredientCreate, IngredientEdit, IngredientList } from 'module/Ingredients'
+import { MealComponentCreate, MealComponentEdit, MealComponentList } from 'module/MealComponents'
+import { MealCreate, MealEdit, MealList } from 'module/Meals'
+import { MenuCreate, MenuEdit, MenuList } from 'module/Menus'
 
-// Компонент для работы с React Admin, который будет загружен только на клиенте
+import { adminApiProvider } from './apiProvider'
+
 const AdminPanel = () => {
-    // Убедимся, что мы на клиенте перед доступом к API браузера
     if (typeof window === 'undefined') {
         return null
     }
