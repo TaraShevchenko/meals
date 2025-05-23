@@ -14,10 +14,11 @@ import type {
     UpdateParams,
 } from 'shared/types/dataProvider'
 import type {
-    CreateMealComponentData,
+    CreateMealComponentFormData,
     MealComponent,
     MealComponentWithIngredients,
     UpdateMealComponentData,
+    UpdateMealComponentFormData,
 } from 'shared/types/prisma'
 
 export const mealComponentsDataProvider = {
@@ -65,27 +66,52 @@ export const mealComponentsDataProvider = {
         return { data }
     },
 
-    create: async (params: CreateParams<CreateMealComponentData>): Promise<DataProviderResult<MealComponent>> => {
+    create: async (
+        params: CreateParams<CreateMealComponentFormData>,
+    ): Promise<DataProviderResult<MealComponentWithIngredients>> => {
         const { data } = params
         const result = await prisma.mealComponent.create({
             data: {
                 name: data.name,
                 type: data.type,
+                ingredients: data.ingredients
+                    ? {
+                          create: data.ingredients.map((ingredient) => ({
+                              quantity: ingredient.quantity,
+                              ingredientId: ingredient.ingredientId,
+                          })),
+                      }
+                    : undefined,
             },
+            include: { ingredients: { include: { ingredient: true } } },
         })
 
         return { data: result }
     },
 
     update: async (
-        params: UpdateParams<UpdateMealComponentData>,
+        params: UpdateParams<UpdateMealComponentFormData>,
     ): Promise<DataProviderResult<MealComponentWithIngredients>> => {
         const { id, data } = params
+
+        // Сначала удаляем все существующие ингредиенты
+        await prisma.mealComponentIngredient.deleteMany({
+            where: { componentId: String(id) },
+        })
+
         const result = await prisma.mealComponent.update({
             where: { id: String(id) },
             data: {
                 name: data.name,
                 type: data.type,
+                ingredients: data.ingredients
+                    ? {
+                          create: data.ingredients.map((ingredient) => ({
+                              quantity: ingredient.quantity,
+                              ingredientId: ingredient.ingredientId,
+                          })),
+                      }
+                    : undefined,
             },
             include: { ingredients: { include: { ingredient: true } } },
         })

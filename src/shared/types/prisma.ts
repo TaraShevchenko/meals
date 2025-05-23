@@ -71,3 +71,21 @@ export type MenuWithMeals = Prisma.MenuGetPayload<{
         }
     }
 }>
+
+// Типы для данных с ингредиентами из формы
+export type MealComponentIngredientFormData = {
+    ingredientId: string
+    quantity: number
+}
+
+export type CreateMealComponentFormData = {
+    name: string
+    type: ComponentType
+    ingredients?: MealComponentIngredientFormData[]
+}
+
+export type UpdateMealComponentFormData = {
+    name: string
+    type: ComponentType
+    ingredients?: MealComponentIngredientFormData[]
+}
