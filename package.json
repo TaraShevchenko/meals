@@ -1,27 +1,51 @@
 {
-  "name": "meals",
-  "version": "0.1.0",
-  "private": true,
-  "scripts": {
-    "dev": "next dev",
-    "build": "next build",
-    "start": "next start",
-    "lint": "next lint"
-  },
-  "dependencies": {
-    "react": "^19.0.0",
-    "react-dom": "^19.0.0",
-    "next": "15.3.2"
-  },
-  "devDependencies": {
-    "typescript": "^5",
-    "@types/node": "^20",
-    "@types/react": "^19",
-    "@types/react-dom": "^19",
-    "@tailwindcss/postcss": "^4",
-    "tailwindcss": "^4",
-    "eslint": "^9",
-    "eslint-config-next": "15.3.2",
-    "@eslint/eslintrc": "^3"
-  }
+    "name": "meals",
+    "version": "0.1.0",
+    "private": true,
+    "scripts": {
+        "dev": "next dev",
+        "build": "next build",
+        "start": "next start",
+        "lint": "next lint",
+        "format": "prettier --write .",
+        "db:migrate": "prisma migrate deploy",
+        "db:generate": "prisma migrate dev",
+        "db:push": "prisma db push --force-reset",
+        "db:studio": "prisma studio",
+        "seed:ingredients": "tsx prisma/seed/Ingredients.ts"
+    },
+    "dependencies": {
+        "@emotion/react": "^11.14.0",
+        "@emotion/styled": "^11.14.0",
+        "@prisma/client": "^6.8.2",
+        "@t3-oss/env-nextjs": "^0.13.4",
+        "next": "15.3.2",
+        "ra-data-json-server": "^5.8.2",
+        "ra-data-simple-rest": "^5.8.2",
+        "react": "^19.0.0",
+        "react-admin": "^5.8.2",
+        "react-dom": "^19.0.0",
+        "zod": "^3.25.7"
+    },
+    "devDependencies": {
+        "@eslint/eslintrc": "^3",
+        "@tailwindcss/postcss": "^4",
+        "@trivago/prettier-plugin-sort-imports": "^5.2.2",
+        "@types/node": "^20.17.48",
+        "@types/react": "^19",
+        "@types/react-dom": "^19",
+        "eslint": "^9",
+        "eslint-config-next": "15.3.2",
+        "eslint-config-prettier": "^9.1.0",
+        "eslint-plugin-import": "^2.31.0",
+        "eslint-plugin-prettier": "^5.2.1",
+        "prettier": "^3.3.3",
+        "prettier-plugin-tailwindcss": "^0.6.8",
+        "prisma": "^6.8.2",
+        "tailwindcss": "^4",
+        "ts-node": "^10.9.2",
+        "tslib": "^2.8.1",
+        "tsx": "^4.19.3",
+        "typescript": "^5.8.3"
+    }
 }
