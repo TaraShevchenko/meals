@@ -2,7 +2,6 @@
 
 import { DataProvider } from 'react-admin'
 
-// Вспомогательная функция для fetch запросов
 const fetchJson = async (url: string, options: RequestInit = {}) => {
     const response = await fetch(url, options)
     const json = await response.json()
@@ -14,7 +13,6 @@ const fetchJson = async (url: string, options: RequestInit = {}) => {
     return json
 }
 
-// Создаем базовый URL для API запросов, учитывая что window доступен только на клиенте
 const getApiBaseUrl = () => {
     if (typeof window !== 'undefined') {
         return window.location.origin
@@ -22,7 +20,6 @@ const getApiBaseUrl = () => {
     return ''
 }
 
-// Этот провайдер использует fetch для обращения к нашему API
 export const adminApiProvider: DataProvider = {
     getList: async (resource, params) => {
         const { page, perPage } = params.pagination || { page: 1, perPage: 10 }
@@ -34,7 +31,6 @@ export const adminApiProvider: DataProvider = {
         url.searchParams.append('_sort', field)
         url.searchParams.append('_order', order)
 
-        // Добавляем фильтры
         if (params.filter) {
             Object.entries(params.filter).forEach(([key, value]) => {
                 url.searchParams.append(key, value as string)
@@ -76,7 +72,6 @@ export const adminApiProvider: DataProvider = {
         url.searchParams.append('_order', sort.order)
         url.searchParams.append(target, id.toString())
 
-        // Добавляем фильтры
         Object.entries(filter).forEach(([key, value]) => {
             url.searchParams.append(key, value as string)
         })

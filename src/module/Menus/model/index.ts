@@ -12,8 +12,8 @@ import type {
     GetOneParams,
     UpdateManyParams,
     UpdateParams,
-} from 'shared/types/dataProvider'
-import type { CreateMenuData, Menu, UpdateMenuData } from 'shared/types/prisma'
+} from 'shared/types/dataProvider.types'
+import type { CreateMenuData, Menu, UpdateMenuData } from 'shared/types/prisma.types'
 
 type MenuWithBasicMeals = Prisma.MenuGetPayload<{
     include: { meals: true }

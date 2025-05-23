@@ -9,16 +9,18 @@ import type {
     GetListParams,
     GetListResult,
     GetManyParams,
+    GetManyReferenceParams,
     GetOneParams,
     UpdateManyParams,
     UpdateParams,
-} from 'shared/types/dataProvider'
+} from 'shared/types/dataProvider.types'
 import type {
-    CreateMealComponentData,
+    CreateMealComponentFormData,
     MealComponent,
     MealComponentWithIngredients,
     UpdateMealComponentData,
-} from 'shared/types/prisma'
+    UpdateMealComponentFormData,
+} from 'shared/types/prisma.types'
 
 export const mealComponentsDataProvider = {
     getList: async (params: GetListParams): Promise<GetListResult<MealComponentWithIngredients>> => {
@@ -65,27 +67,51 @@ export const mealComponentsDataProvider = {
         return { data }
     },
 
-    create: async (params: CreateParams<CreateMealComponentData>): Promise<DataProviderResult<MealComponent>> => {
+    create: async (
+        params: CreateParams<CreateMealComponentFormData>,
+    ): Promise<DataProviderResult<MealComponentWithIngredients>> => {
         const { data } = params
         const result = await prisma.mealComponent.create({
             data: {
                 name: data.name,
                 type: data.type,
+                ingredients: data.ingredients
+                    ? {
+                          create: data.ingredients.map((ingredient) => ({
+                              quantity: ingredient.quantity,
+                              ingredientId: ingredient.ingredientId,
+                          })),
+                      }
+                    : undefined,
             },
+            include: { ingredients: { include: { ingredient: true } } },
         })
 
         return { data: result }
     },
 
     update: async (
-        params: UpdateParams<UpdateMealComponentData>,
+        params: UpdateParams<UpdateMealComponentFormData>,
     ): Promise<DataProviderResult<MealComponentWithIngredients>> => {
         const { id, data } = params
+
+        await prisma.mealComponentIngredient.deleteMany({
+            where: { componentId: String(id) },
+        })
+
         const result = await prisma.mealComponent.update({
             where: { id: String(id) },
             data: {
                 name: data.name,
                 type: data.type,
+                ingredients: data.ingredients
+                    ? {
+                          create: data.ingredients.map((ingredient) => ({
+                              quantity: ingredient.quantity,
+                              ingredientId: ingredient.ingredientId,
+                          })),
+                      }
+                    : undefined,
             },
             include: { ingredients: { include: { ingredient: true } } },
         })
@@ -128,5 +154,46 @@ export const mealComponentsDataProvider = {
         })
 
         return { data: ids }
+    },
+
+    getManyReference: async (params: GetManyReferenceParams): Promise<GetListResult<MealComponentWithIngredients>> => {
+        const {
+            target,
+            id,
+            pagination = { page: 1, perPage: 10 },
+            sort = { field: 'createdAt', order: 'DESC' },
+            filter = {},
+        } = params
+        const { page = 1, perPage = 10 } = pagination
+        const { field = 'createdAt', order = 'DESC' } = sort
+        const offset = (page - 1) * perPage
+
+        if (target === 'meals') {
+            const data = await prisma.mealComponent.findMany({
+                skip: offset,
+                take: perPage,
+                where: {
+                    meals: {
+                        some: { id: String(id) },
+                    },
+                    ...filter,
+                },
+                orderBy: { [field]: order.toLowerCase() as 'asc' | 'desc' },
+                include: { ingredients: { include: { ingredient: true } } },
+            })
+
+            const total = await prisma.mealComponent.count({
+                where: {
+                    meals: {
+                        some: { id: String(id) },
+                    },
+                    ...filter,
+                },
+            })
+
+            return { data, total }
+        }
+
+        throw new Error(`Unknown target: ${target} for mealComponents`)
     },
 }

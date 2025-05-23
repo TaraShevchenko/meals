@@ -1,23 +1,20 @@
 import { NextRequest, NextResponse } from 'next/server'
 
-import { dataProvider } from '../data-provider'
+import { dataProvider } from '../dataProvider'
 
 export async function GET(request: NextRequest, { params }: { params: Promise<{ resource: string }> }) {
     const { resource } = await params
     const searchParams = request.nextUrl.searchParams
 
     try {
-        // Получение параметров запроса
         const page = parseInt(searchParams.get('_page') || '1', 10)
         const perPage = parseInt(searchParams.get('_perPage') || '10', 10)
         const sortField = searchParams.get('_sort') || 'id'
         const sortOrder = (searchParams.get('_order') || 'ASC') as 'ASC' | 'DESC'
 
-        // Проверяем, запрашивается ли список или множество элементов по id
         const ids = searchParams.get('ids')
 
         if (ids) {
-            // Запрос на получение множества записей по id
             const result = await dataProvider.getMany(resource, {
                 ids: ids.split(','),
             })
@@ -25,7 +22,6 @@ export async function GET(request: NextRequest, { params }: { params: Promise<{ 
             return NextResponse.json(result.data)
         }
 
-        // Создаем фильтр из остальных query параметров
         const filter: Record<string, unknown> = {}
         searchParams.forEach((value, key) => {
             if (!key.startsWith('_')) {
@@ -33,7 +29,6 @@ export async function GET(request: NextRequest, { params }: { params: Promise<{ 
             }
         })
 
-        // Получение списка записей
         const result = await dataProvider.getList(resource, {
             pagination: { page, perPage },
             sort: { field: sortField, order: sortOrder },
