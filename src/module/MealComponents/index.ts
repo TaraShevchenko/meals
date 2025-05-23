@@ -1,2 +1,2 @@
 export { MealComponentList, MealComponentEdit, MealComponentCreate } from './ui'
-export { mealComponentsDataProvider } from './model'
+export { mealComponentsDataProvider, type CreateMealComponentFormData, type UpdateMealComponentFormData } from './model'

@@ -20,7 +20,7 @@ const getApiBaseUrl = () => {
     return ''
 }
 
-export const adminApiProvider: DataProvider = {
+export const reactAdminDataProvider: DataProvider = {
     getList: async (resource, params) => {
         const { page, perPage } = params.pagination || { page: 1, perPage: 10 }
         const { field, order } = params.sort || { field: 'id', order: 'ASC' }
