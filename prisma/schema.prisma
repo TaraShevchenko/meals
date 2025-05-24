@@ -62,16 +62,17 @@ model MealComponentIngredient {
 }
 
 model Ingredient {
-  id           String                    @id @default(uuid())
-  name         String                    @unique
-  calories     Float
-  protein      Float?
-  carbs        Float?
-  fat          Float?
-  productNames String[]
-  components   MealComponentIngredient[]
-  createdAt    DateTime                  @default(now())
-  updatedAt    DateTime                  @updatedAt
+  id               String                    @id @default(uuid())
+  name             String                    @unique
+  calories         Float
+  protein          Float?
+  carbs            Float?
+  fat              Float?
+  productNames     String[]
+  components       MealComponentIngredient[]
+  orderReportItems OrderReportItem[]
+  createdAt        DateTime                  @default(now())
+  updatedAt        DateTime                  @updatedAt
 }
 
 enum ComponentType {
@@ -85,4 +86,26 @@ enum MealType {
   LUNCH
   DINNER
   SNACK
+}
+
+model OrderReport {
+  id        String            @id @default(uuid())
+  name      String
+  startDate DateTime
+  endDate   DateTime
+  items     OrderReportItem[]
+  createdAt DateTime          @default(now())
+  updatedAt DateTime          @updatedAt
+}
+
+model OrderReportItem {
+  id           String      @id @default(uuid())
+  report       OrderReport @relation(fields: [reportId], references: [id], onDelete: Cascade)
+  reportId     String
+  ingredient   Ingredient  @relation(fields: [ingredientId], references: [id])
+  ingredientId String
+  quantity     Float
+  path         String
+  createdAt    DateTime    @default(now())
+  updatedAt    DateTime    @updatedAt
 }
