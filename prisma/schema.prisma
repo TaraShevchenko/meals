@@ -23,7 +23,7 @@ model Menu {
 
 model Meal {
   id         String          @id @default(uuid())
-  name       String
+  name       String?
   components MealComponent[] @relation("MealToComponent")
   menus      Menu[]          @relation("MenuToMeal")
   createdAt  DateTime        @default(now())

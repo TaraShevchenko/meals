@@ -21,6 +21,20 @@ type Meal = PrismaMeal & {
 export type CreateMealData = Prisma.MealCreateInput
 export type UpdateMealData = Prisma.MealUpdateInput
 
+// Вспомогательная функция для генерации названия блюда из компонентов
+const generateMealName = async (componentIds: string[]): Promise<string> => {
+    if (componentIds.length === 0) {
+        return 'Блюдо без компонентов'
+    }
+
+    const components = await prisma.mealComponent.findMany({
+        where: { id: { in: componentIds } },
+        select: { name: true },
+    })
+
+    return components.map((comp) => comp.name).join(' + ')
+}
+
 export const mealsDataProvider = {
     getList: async (params: GetListParams): Promise<GetListResult<Meal>> => {
         const { page = 1, perPage = 10 } = params.pagination || {}
@@ -68,15 +82,22 @@ export const mealsDataProvider = {
 
     create: async (params: CreateParams<CreateMealData>): Promise<DataProviderResult<Meal>> => {
         const { data } = params
+
+        // Получаем ID компонентов
+        const componentIds = Array.isArray(data.components)
+            ? data.components.map((id: string) => String(id))
+            : data.components
+              ? [String(data.components)]
+              : []
+
+        // Генерируем название, если оно не предоставлено
+        const mealName = data.name || (await generateMealName(componentIds))
+
         const result = await prisma.meal.create({
             data: {
-                name: data.name,
+                name: mealName,
                 components: {
-                    connect: Array.isArray(data.components)
-                        ? data.components.map((id: string) => ({ id: String(id) }))
-                        : data.components
-                          ? [{ id: String(data.components) }]
-                          : [],
+                    connect: componentIds.map((id: string) => ({ id })),
                 },
             },
             include: { components: true },
@@ -87,10 +108,20 @@ export const mealsDataProvider = {
 
     update: async (params: UpdateParams<UpdateMealData>): Promise<DataProviderResult<Meal>> => {
         const { id, data } = params
+
+        // Если компоненты обновляются и название не предоставлено, генерируем новое название
+        let mealName = data.name
+        if (data.components && !data.name) {
+            const componentIds = Array.isArray(data.components)
+                ? data.components.map((compId: string) => String(compId))
+                : [String(data.components)]
+            mealName = await generateMealName(componentIds)
+        }
+
         const result = await prisma.meal.update({
             where: { id: String(id) },
             data: {
-                name: data.name,
+                name: mealName,
                 components: data.components
                     ? {
                           set: [],
