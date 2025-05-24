@@ -15,7 +15,7 @@ datasource db {
 
 model Menu {
   id        String     @id @default(uuid())
-  date      DateTime
+  date      DateTime   @unique
   menuMeals MenuMeal[] @relation("MenuToMenuMeal")
   createdAt DateTime   @default(now())
   updatedAt DateTime   @updatedAt
@@ -38,8 +38,6 @@ model MenuMeal {
   mealId   String
   mealType MealType
   order    Int      @default(0)
-
-  @@unique([menuId, mealId, mealType])
 }
 
 model MealComponent {
