@@ -208,8 +208,8 @@ export const mealsDataProvider = {
                 skip: offset,
                 take: perPage,
                 where: {
-                    menus: {
-                        some: { id: String(id) },
+                    menuMeals: {
+                        some: { menuId: String(id) },
                     },
                     ...filter,
                 },
@@ -227,8 +227,8 @@ export const mealsDataProvider = {
 
             const total = await prisma.meal.count({
                 where: {
-                    menus: {
-                        some: { id: String(id) },
+                    menuMeals: {
+                        some: { menuId: String(id) },
                     },
                     ...filter,
                 },

@@ -1,2 +1,2 @@
 export { menusDataProvider } from './api'
-export type { CreateMenuData } from './types'
+export type { CreateMenuData, MealType } from './types'
