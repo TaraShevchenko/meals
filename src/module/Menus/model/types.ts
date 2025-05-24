@@ -1,13 +1,44 @@
-import type { ComponentType, Meal, Prisma, Menu as PrismaMenu } from '@prisma/client'
+import type { ComponentType, MealType, MenuMeal, Prisma, Menu as PrismaMenu } from '@prisma/client'
 
-export { ComponentType }
+export { ComponentType, MealType }
 
 export type Menu = PrismaMenu & {
-    meals?: Meal[]
+    menuMeals?: MenuMeal[]
 }
 
-export type CreateMenuData = Prisma.MenuCreateInput
-export type UpdateMenuData = Prisma.MenuUpdateInput
+export type CreateMenuData = {
+    date: Date | string
+    menuMeals?: Array<{
+        mealId: string
+        mealType: MealType
+        order?: number
+    }>
+}
+
+export type UpdateMenuData = {
+    date?: Date | string
+    menuMeals?: Array<{
+        mealId: string
+        mealType: MealType
+        order?: number
+    }>
+}
+
+export type MenuMealWithMeal = Prisma.MenuMealGetPayload<{
+    include: {
+        meal: {
+            include: {
+                components: {
+                    include: {
+                        ingredients: {
+                            include: { ingredient: true }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}>
 
 export type MealWithComponents = Prisma.MealGetPayload<{
     include: {
@@ -23,12 +54,16 @@ export type MealWithComponents = Prisma.MealGetPayload<{
 
 export type MenuWithMeals = Prisma.MenuGetPayload<{
     include: {
-        meals: {
+        menuMeals: {
             include: {
-                components: {
+                meal: {
                     include: {
-                        ingredients: {
-                            include: { ingredient: true }
+                        components: {
+                            include: {
+                                ingredients: {
+                                    include: { ingredient: true }
+                                }
+                            }
                         }
                     }
                 }
@@ -38,5 +73,9 @@ export type MenuWithMeals = Prisma.MenuGetPayload<{
 }>
 
 export type MenuWithBasicMeals = Prisma.MenuGetPayload<{
-    include: { meals: true }
+    include: {
+        menuMeals: {
+            include: { meal: true }
+        }
+    }
 }>

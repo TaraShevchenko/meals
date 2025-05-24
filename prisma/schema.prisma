@@ -14,20 +14,32 @@ datasource db {
 }
 
 model Menu {
-  id        String   @id @default(uuid())
+  id        String     @id @default(uuid())
   date      DateTime
-  meals     Meal[]   @relation("MenuToMeal")
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  menuMeals MenuMeal[] @relation("MenuToMenuMeal")
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
 }
 
 model Meal {
   id         String          @id @default(uuid())
   name       String?
   components MealComponent[] @relation("MealToComponent")
-  menus      Menu[]          @relation("MenuToMeal")
+  menuMeals  MenuMeal[]      @relation("MealToMenuMeal")
   createdAt  DateTime        @default(now())
   updatedAt  DateTime        @updatedAt
+}
+
+model MenuMeal {
+  id       String   @id @default(uuid())
+  menu     Menu     @relation("MenuToMenuMeal", fields: [menuId], references: [id], onDelete: Cascade)
+  menuId   String
+  meal     Meal     @relation("MealToMenuMeal", fields: [mealId], references: [id], onDelete: Cascade)
+  mealId   String
+  mealType MealType
+  order    Int      @default(0)
+
+  @@unique([menuId, mealId, mealType])
 }
 
 model MealComponent {
@@ -68,4 +80,11 @@ enum ComponentType {
   FIBER
   PROTEIN
   CARBS
+}
+
+enum MealType {
+  BREAKFAST
+  LUNCH
+  DINNER
+  SNACK
 }

@@ -30,7 +30,12 @@ export const menusDataProvider = {
             take: perPage,
             orderBy,
             where: filter as Prisma.MenuWhereInput,
-            include: { meals: true },
+            include: {
+                menuMeals: {
+                    include: { meal: true },
+                    orderBy: { order: 'asc' },
+                },
+            },
         })
 
         const total = await prisma.menu.count({ where: filter as Prisma.MenuWhereInput })
@@ -45,7 +50,12 @@ export const menusDataProvider = {
         const { id } = params
         const data = await prisma.menu.findUnique({
             where: { id: String(id) },
-            include: { meals: true },
+            include: {
+                menuMeals: {
+                    include: { meal: true },
+                    orderBy: { order: 'asc' },
+                },
+            },
         })
 
         return { data }
@@ -55,7 +65,12 @@ export const menusDataProvider = {
         const { ids } = params
         const data = await prisma.menu.findMany({
             where: { id: { in: ids.map(String) } },
-            include: { meals: true },
+            include: {
+                menuMeals: {
+                    include: { meal: true },
+                    orderBy: { order: 'asc' },
+                },
+            },
         })
 
         return { data }
@@ -66,15 +81,22 @@ export const menusDataProvider = {
         const result = await prisma.menu.create({
             data: {
                 date: new Date(data.date),
-                meals: {
-                    connect: Array.isArray(data.meals)
-                        ? data.meals.map((id: string) => ({ id: String(id) }))
-                        : data.meals
-                          ? [{ id: String(data.meals) }]
-                          : [],
+                menuMeals: data.menuMeals
+                    ? {
+                          create: data.menuMeals.map((menuMeal, index) => ({
+                              mealId: menuMeal.mealId,
+                              mealType: menuMeal.mealType,
+                              order: menuMeal.order ?? index,
+                          })),
+                      }
+                    : undefined,
+            },
+            include: {
+                menuMeals: {
+                    include: { meal: true },
+                    orderBy: { order: 'asc' },
                 },
             },
-            include: { meals: true },
         })
 
         return { data: result }
@@ -82,20 +104,33 @@ export const menusDataProvider = {
 
     update: async (params: UpdateParams<UpdateMenuData>): Promise<DataProviderResult<MenuWithBasicMeals>> => {
         const { id, data } = params
+
+        if (data.menuMeals) {
+            await prisma.menuMeal.deleteMany({
+                where: { menuId: String(id) },
+            })
+        }
+
         const result = await prisma.menu.update({
             where: { id: String(id) },
             data: {
                 date: data.date ? new Date(data.date as string | Date) : undefined,
-                meals: data.meals
+                menuMeals: data.menuMeals
                     ? {
-                          set: [],
-                          connect: Array.isArray(data.meals)
-                              ? data.meals.map((mealId: string) => ({ id: String(mealId) }))
-                              : [{ id: String(data.meals) }],
+                          create: data.menuMeals.map((menuMeal, index) => ({
+                              mealId: menuMeal.mealId,
+                              mealType: menuMeal.mealType,
+                              order: menuMeal.order ?? index,
+                          })),
                       }
                     : undefined,
             },
-            include: { meals: true },
+            include: {
+                menuMeals: {
+                    include: { meal: true },
+                    orderBy: { order: 'asc' },
+                },
+            },
         })
 
         return { data: result }
