@@ -7,15 +7,6 @@ export const IngridientsNamesList = () => {
     const productNames = record?.productNames || []
     const ingredientName = record?.name || ''
 
-    if (productNames.length === 0) {
-        return (
-            <div className="mt-6">
-                <h3>Наименования продуктов:</h3>
-                <p>Наименования продуктов не добавлены</p>
-            </div>
-        )
-    }
-
     return (
         <div className="border-dark-border bg-dark-bg max-w-md overflow-hidden rounded-sm border">
             <div className="border-dark-border bg-dark-bg border-b px-2 py-1">
@@ -23,9 +14,10 @@ export const IngridientsNamesList = () => {
             </div>
             <div>
                 <SearchInStoresButtons productName={ingredientName} />
-                {productNames.map((productName: string) => (
-                    <SearchInStoresButtons key={productName} productName={productName} />
-                ))}
+                {productNames.length > 0 &&
+                    productNames.map((productName: string) => (
+                        <SearchInStoresButtons key={productName} productName={productName} />
+                    ))}
             </div>
         </div>
     )

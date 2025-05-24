@@ -18,7 +18,7 @@ export const SearchInStoresButtons = ({ productName }: { productName: string }) 
         <div key={productName} className="border-dark-border border-b px-2 py-1 last:border-b-0">
             <div className="flex items-center justify-between">
                 <div className="flex-1">
-                    <h4 className="text-base font-medium text-white">{productName}</h4>
+                    <h4 className="max-w-[280px] truncate text-base font-medium text-white">{productName}</h4>
                 </div>
 
                 <div className="ml-3 flex gap-2">
