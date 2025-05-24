@@ -71,8 +71,7 @@ export const ingredientsDataProvider = {
                 protein: data.protein ? parseFloat(String(data.protein)) : null,
                 carbs: data.carbs ? parseFloat(String(data.carbs)) : null,
                 fat: data.fat ? parseFloat(String(data.fat)) : null,
-                silpoLink: data.silpoLink || null,
-                atbLink: data.atbLink || null,
+                productNames: data.productNames || [],
             },
         })
 
@@ -89,8 +88,7 @@ export const ingredientsDataProvider = {
                 protein: data.protein !== undefined ? parseFloat(String(data.protein)) : undefined,
                 carbs: data.carbs !== undefined ? parseFloat(String(data.carbs)) : undefined,
                 fat: data.fat !== undefined ? parseFloat(String(data.fat)) : undefined,
-                silpoLink: data.silpoLink !== undefined ? data.silpoLink : undefined,
-                atbLink: data.atbLink !== undefined ? data.atbLink : undefined,
+                productNames: data.productNames !== undefined ? data.productNames : undefined,
             },
         })
 
@@ -125,8 +123,7 @@ export const ingredientsDataProvider = {
                 protein: data.protein !== undefined ? parseFloat(String(data.protein)) : undefined,
                 carbs: data.carbs !== undefined ? parseFloat(String(data.carbs)) : undefined,
                 fat: data.fat !== undefined ? parseFloat(String(data.fat)) : undefined,
-                silpoLink: data.silpoLink !== undefined ? data.silpoLink : undefined,
-                atbLink: data.atbLink !== undefined ? data.atbLink : undefined,
+                productNames: data.productNames !== undefined ? data.productNames : undefined,
             },
         })
 

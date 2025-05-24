@@ -52,17 +52,16 @@ model MealComponentIngredient {
 }
 
 model Ingredient {
-  id         String                    @id @default(uuid())
-  name       String                    @unique
-  calories   Float
-  protein    Float?
-  carbs      Float?
-  fat        Float?
-  components MealComponentIngredient[]
-  createdAt  DateTime                  @default(now())
-  updatedAt  DateTime                  @updatedAt
-  silpoLink  String?
-  atbLink    String?
+  id           String                    @id @default(uuid())
+  name         String                    @unique
+  calories     Float
+  protein      Float?
+  carbs        Float?
+  fat          Float?
+  productNames String[]
+  components   MealComponentIngredient[]
+  createdAt    DateTime                  @default(now())
+  updatedAt    DateTime                  @updatedAt
 }
 
 enum ComponentType {

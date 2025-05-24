@@ -1,2 +1,2 @@
-export { IngredientList, IngredientEdit, IngredientCreate } from './ui'
+export { IngredientList, IngredientEdit, IngredientCreate, IngredientShow } from './ui'
 export { ingredientsDataProvider, type CreateIngredientData } from './model'

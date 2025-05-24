@@ -2,7 +2,7 @@
 
 import { Admin, Resource } from 'react-admin'
 
-import { IngredientCreate, IngredientEdit, IngredientList } from 'module/Ingredients'
+import { IngredientCreate, IngredientEdit, IngredientList, IngredientShow } from 'module/Ingredients'
 import { MealComponentCreate, MealComponentEdit, MealComponentList } from 'module/MealComponents'
 import { MealCreate, MealEdit, MealList } from 'module/Meals'
 import { MenuCreate, MenuEdit, MenuList } from 'module/Menus'
@@ -15,6 +15,7 @@ const AdminPanel = () => {
             <Resource
                 name="ingredients"
                 list={IngredientList}
+                show={IngredientShow}
                 edit={IngredientEdit}
                 create={IngredientCreate}
                 options={{ label: 'Ингредиенты' }}
