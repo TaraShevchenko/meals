@@ -12,7 +12,6 @@ import {
     SimpleForm,
     TextField,
     TextInput,
-    required,
 } from 'react-admin'
 
 export const MealList: React.FC = () => (
@@ -26,7 +25,12 @@ export const MealList: React.FC = () => (
 export const MealEdit: React.FC = () => (
     <Edit>
         <SimpleForm>
-            <TextInput source="name" label="Название" validate={required()} fullWidth />
+            <TextInput
+                source="name"
+                label="Название"
+                fullWidth
+                helperText="Оставьте пустым для автоматической генерации из компонентов"
+            />
             <ReferenceArrayInput reference="mealComponents" source="components">
                 <AutocompleteArrayInput optionText="name" label="Компоненты блюда" />
             </ReferenceArrayInput>
@@ -37,7 +41,12 @@ export const MealEdit: React.FC = () => (
 export const MealCreate: React.FC = () => (
     <Create>
         <SimpleForm>
-            <TextInput source="name" label="Название" validate={required()} fullWidth />
+            <TextInput
+                source="name"
+                label="Название"
+                fullWidth
+                helperText="Оставьте пустым для автоматической генерации из компонентов"
+            />
             <ReferenceArrayInput reference="mealComponents" source="components">
                 <AutocompleteArrayInput optionText="name" label="Компоненты блюда" />
             </ReferenceArrayInput>
