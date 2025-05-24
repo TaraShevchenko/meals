@@ -6,6 +6,7 @@ import { IngredientCreate, IngredientEdit, IngredientList, IngredientShow } from
 import { MealComponentCreate, MealComponentEdit, MealComponentList } from 'module/MealComponents'
 import { MealCreate, MealEdit, MealList } from 'module/Meals'
 import { MenuCreate, MenuEdit, MenuList } from 'module/Menus'
+import { OrderReportList, OrderReportShow } from 'module/OrderReports'
 
 import { reactAdminDataProvider } from 'shared/lib/react-admin/provider'
 
@@ -29,6 +30,12 @@ const AdminPanel = () => {
             />
             <Resource name="meals" list={MealList} edit={MealEdit} create={MealCreate} options={{ label: 'Блюда' }} />
             <Resource name="menus" list={MenuList} edit={MenuEdit} create={MenuCreate} options={{ label: 'Меню' }} />
+            <Resource
+                name="orderReports"
+                list={OrderReportList}
+                show={OrderReportShow}
+                options={{ label: 'Отчеты заказов' }}
+            />
         </Admin>
     )
 }
