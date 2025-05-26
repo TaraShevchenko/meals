@@ -1,6 +1,6 @@
 import { PrismaClient } from '@prisma/client'
 
-import { INGREDIENTS } from './data/Ingredients'
+import { INGREDIENTS } from './data/Ingredients.data'
 
 const prisma = new PrismaClient()
 

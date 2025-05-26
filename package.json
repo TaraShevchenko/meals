@@ -12,7 +12,10 @@
         "db:generate": "prisma migrate dev",
         "db:push": "prisma db push --force-reset",
         "db:studio": "prisma studio",
-        "seed:ingredients": "tsx prisma/seed/Ingredients.ts"
+        "seed:ingredients": "tsx prisma/seed/ingredients.ts",
+        "seed:mealcomponents": "tsx prisma/seed/mealComponents.ts",
+        "seed:meals": "tsx prisma/seed/meals.ts",
+        "seed:reset": "tsx prisma/seed/reset.ts"
     },
     "dependencies": {
         "@emotion/react": "^11.14.0",
