@@ -1,2 +1,2 @@
 export { ingredientsDataProvider } from './api'
-export type { CreateIngredientData } from './types'
+export type { Ingredient, CreateIngredientData } from './types'

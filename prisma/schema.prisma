@@ -23,7 +23,7 @@ model Menu {
 
 model Meal {
   id         String          @id @default(uuid())
-  name       String?
+  name       String          @unique
   components MealComponent[] @relation("MealToComponent")
   menuMeals  MenuMeal[]      @relation("MealToMenuMeal")
   createdAt  DateTime        @default(now())
@@ -42,7 +42,7 @@ model MenuMeal {
 
 model MealComponent {
   id          String                    @id @default(uuid())
-  name        String
+  name        String                    @unique
   type        ComponentType
   ingredients MealComponentIngredient[]
   meals       Meal[]                    @relation("MealToComponent")
