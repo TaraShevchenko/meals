@@ -2,7 +2,7 @@ import { ComponentType } from '@prisma/client'
 
 import { CreateMealComponentFormData } from 'module/MealComponents'
 
-import { INGREDIENT_NAMES } from './Ingredients'
+import { INGREDIENT_NAMES } from './Ingredients.data'
 
 export const MEAL_COMPONENT_NAMES = {
     // CARBS

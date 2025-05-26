@@ -85,6 +85,14 @@ export const INGREDIENTS: CreateIngredientData[] = [
         fat: 3.2,
         carbs: 71,
     },
+    {
+        name: INGREDIENT_NAMES.OliveOil,
+        productNames: ['Олія оливкова'],
+        calories: 884,
+        protein: 0,
+        fat: 100,
+        carbs: 0,
+    },
 
     // Для салатов
     {
